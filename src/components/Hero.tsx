@@ -19,6 +19,15 @@ export default function Hero() {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
   };
 
+  // Fonction pour gérer le défilement fluide vers les projets
+  const handleScrollToProjects = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const projectsSection = document.getElementById('projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-background px-6 pt-24 overflow-hidden w-full">
       {/* Grille de fond subtile */}
@@ -38,7 +47,7 @@ export default function Hero() {
           
           <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-extrabold tracking-tight">
             <span className="text-white">Joel Parfait</span>{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+            <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
               TCHUENTE KENMEGNE
             </span>
           </motion.h1>
@@ -51,18 +60,28 @@ export default function Hero() {
             Passionné par la création d'applications web modernes et la sécurisation des systèmes.
           </motion.p>
 
-          {/* Boutons */}
+          {/* Boutons / Liens ajustés */}
           <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-4">
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20">
+            {/* Lien vers la section Projets */}
+            <a 
+              href="#projects" 
+              onClick={handleScrollToProjects}
+              className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium text-center hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20 cursor-pointer"
+            >
               Voir Projets
-            </button>
-            <button className="px-6 py-3 bg-slate-900 border border-slate-800 text-white rounded-md font-medium hover:bg-slate-850 transition-colors">
+            </a>
+
+            {/* Lien vers ton CV PDF (S'ouvre sur la même page) */}
+            <a 
+              href="/cv-joel-tchuente.pdf" 
+              className="px-6 py-3 bg-slate-900 border border-slate-800 text-white rounded-md font-medium text-center hover:bg-slate-850 transition-colors cursor-pointer"
+            >
               Mon CV &rarr;
-            </button>
+            </a>
           </motion.div>
         </div>
 
-        {/* Partie Droite : Emplacement Photo (CORRIGÉ ICI) */}
+        {/* Partie Droite : Emplacement Photo */}
         <motion.div
           variants={itemVariants}
           className="relative flex justify-center md:justify-end"

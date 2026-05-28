@@ -42,7 +42,7 @@ export default function Projects() {
   ];
 
   return (
-    <section className="py-20 px-6 max-w-7xl mx-auto w-full space-y-12">
+    <section id="projects" className="py-20 px-6 max-w-7xl mx-auto w-full space-y-12">
       
       {/* En-tête de section */}
       <motion.div

@@ -1,13 +1,45 @@
 // src/components/ExperienceAndContact.tsx
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Briefcase, Award, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Briefcase, Award, Send, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 
 export default function ExperienceAndContact() {
+  // États pour gérer la soumission du formulaire Formspree
+  const [status, setStatus] = useState<'IDLE' | 'LOADING' | 'SUCCESS' | 'ERROR'>('IDLE');
+  
   const scrollVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  };
+
+  // Fonction de soumission asynchrone pour traiter Formspree en arrière-plan (AJAX)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('LOADING');
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        setStatus('SUCCESS');
+        form.reset(); // Réinitialise les champs du formulaire
+      } else {
+        setStatus('ERROR');
+      }
+    } catch (error) {
+      setStatus('ERROR');
+    }
   };
 
   return (
@@ -151,27 +183,81 @@ export default function ExperienceAndContact() {
             </div>
           </div>
 
-          {/* Formulaire (Droite) */}
-          <form className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={(e) => e.preventDefault()}>
+          {/* Formulaire (Droite) - Configuré pour Formspree */}
+          <form 
+            className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6" 
+            action="https://formspree.io/f/mqejnyel" 
+            method="POST" 
+            onSubmit={handleSubmit}
+          >
             <div className="flex flex-col space-y-2">
-              <label className="text-xs font-mono text-slate-400">NAME</label>
-              <input type="text" placeholder="Your name" className="p-3 bg-background border border-border rounded-lg text-white focus:outline-none focus:border-blue-500 text-sm transition-colors" />
+              <label htmlFor="name" className="text-xs font-mono text-slate-400">NAME</label>
+              <input 
+                id="name"
+                name="name" 
+                type="text" 
+                required
+                placeholder="Your name" 
+                className="p-3 bg-background border border-border rounded-lg text-white focus:outline-none focus:border-blue-500 text-sm transition-colors" 
+              />
             </div>
             
             <div className="flex flex-col space-y-2">
-              <label className="text-xs font-mono text-slate-400">EMAIL</label>
-              <input type="email" placeholder="your.email@example.com" className="p-3 bg-background border border-border rounded-lg text-white focus:outline-none focus:border-blue-500 text-sm transition-colors" />
+              <label htmlFor="email" className="text-xs font-mono text-slate-400">EMAIL</label>
+              <input 
+                id="email"
+                name="email" 
+                type="email" 
+                required
+                placeholder="your.email@example.com" 
+                className="p-3 bg-background border border-border rounded-lg text-white focus:outline-none focus:border-blue-500 text-sm transition-colors" 
+              />
             </div>
 
             <div className="flex flex-col space-y-2 sm:col-span-2">
-              <label className="text-xs font-mono text-slate-400">MESSAGE</label>
-              <textarea rows={4} placeholder="Tell me about your project or opportunity..." className="p-3 bg-background border border-border rounded-lg text-white focus:outline-none focus:border-blue-500 text-sm resize-none transition-colors" />
+              <label htmlFor="message" className="text-xs font-mono text-slate-400">MESSAGE</label>
+              <textarea 
+                id="message"
+                name="message" 
+                rows={4} 
+                required
+                placeholder="Tell me about your project or opportunity..." 
+                className="p-3 bg-background border border-border rounded-lg text-white focus:outline-none focus:border-blue-500 text-sm resize-none transition-colors" 
+              />
             </div>
 
-            <div className="sm:col-span-2 flex justify-end pt-2">
-              <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-500 hover:to-purple-500 transition-all shadow-lg shadow-blue-500/10 w-full sm:w-auto justify-center group">
-                Send Message
-                <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            <div className="sm:col-span-2 flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+              {/* Notifications visuelles d'état */}
+              <div className="w-full sm:w-auto">
+                {status === 'SUCCESS' && (
+                  <div className="flex items-center gap-2 text-emerald-400 text-sm font-medium">
+                    <CheckCircle2 className="w-4 h-4" /> Message envoyé avec succès !
+                  </div>
+                )}
+                {status === 'ERROR' && (
+                  <div className="flex items-center gap-2 text-rose-400 text-sm font-medium">
+                    <XCircle className="w-4 h-4" /> Échec de l'envoi, veuillez réessayer.
+                  </div>
+                )}
+              </div>
+
+              {/* Bouton dynamique avec chargement */}
+              <button 
+                type="submit"
+                disabled={status === 'LOADING'}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-500 hover:to-purple-500 transition-all shadow-lg shadow-blue-500/10 w-full sm:w-auto justify-center group disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status === 'LOADING' ? (
+                  <>
+                    Envoi en cours...
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </>
+                )}
               </button>
             </div>
           </form>
