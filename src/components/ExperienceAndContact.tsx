@@ -2,14 +2,16 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+// On importe "Variants" pour corriger le typage strict exigé par Vercel
+import { motion, Variants } from 'framer-motion';
 import { Mail, Phone, MapPin, Briefcase, Award, Send, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 
 export default function ExperienceAndContact() {
   // États pour gérer la soumission du formulaire Formspree
   const [status, setStatus] = useState<'IDLE' | 'LOADING' | 'SUCCESS' | 'ERROR'>('IDLE');
   
-  const scrollVariants = {
+  // On applique le type strict : Variants
+  const scrollVariants: Variants = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };

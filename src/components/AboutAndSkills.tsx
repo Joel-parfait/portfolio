@@ -1,12 +1,12 @@
 // src/components/AboutAndSkills.tsx
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Code2, Server, Shield, Wrench } from 'lucide-react';
 
 export default function AboutAndSkills() {
-  // Configuration de l'animation pour le scroll continu (entrée et sortie)
-  const scrollVariants = {
+  // En ajoutant ": Variants", TypeScript sait exactement comment valider "easeOut"
+  const scrollVariants: Variants = {
     hidden: { 
       opacity: 0, 
       y: 40 
@@ -49,8 +49,6 @@ export default function AboutAndSkills() {
         className="grid grid-cols-1 md:grid-cols-3 gap-12"
         initial="hidden"
         whileInView="visible"
-        // On retire 'once: true' pour que ça s'anime à chaque scroll (montée et descente)
-        // margin: "-15%" permet de déclencher l'animation quand l'élément est bien visible
         viewport={{ once: false, amount: 0.2 }}
         variants={scrollVariants}
       >
@@ -100,37 +98,41 @@ export default function AboutAndSkills() {
 
         {/* Grille des compétences */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skillCategories.map((category, idx) => (
-            <motion.div
-              key={idx}
-              className="p-6 bg-card border border-border rounded-xl space-y-4 hover:border-blue-500/50 transition-all group"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.1 }}
-              // Un petit décalage (delay) basé sur l'index pour un effet de cascade sympa
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { 
-                  opacity: 1, 
-                  y: 0, 
-                  transition: { duration: 0.4, delay: idx * 0.05 } 
-                }
-              }}
-              whileHover={{ y: -5 }}
-            >
-              <div className="flex items-center gap-3">
-                {category.icon}
-                <h3 className="text-white font-semibold text-lg">{category.title}</h3>
-              </div>
-              <ul className="space-y-2 font-mono text-sm text-slate-400">
-                {category.skills.map((skill, sIdx) => (
-                  <li key={sIdx} className="flex items-center gap-2 group-hover:text-slate-300 transition-colors">
-                    <span className="text-blue-500/70">&bull;</span> {skill}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+          {skillCategories.map((category, idx) => {
+            // Création d'un objet de variants typé à la volée pour les cartes enfants
+            const cardVariants: Variants = {
+              hidden: { opacity: 0, y: 30 },
+              visible: { 
+                opacity: 1, 
+                y: 0, 
+                transition: { duration: 0.4, delay: idx * 0.05, ease: "easeOut" } 
+              }
+            };
+
+            return (
+              <motion.div
+                key={idx}
+                className="p-6 bg-card border border-border rounded-xl space-y-4 hover:border-blue-500/50 transition-all group"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.1 }}
+                variants={cardVariants}
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-center gap-3">
+                  {category.icon}
+                  <h3 className="text-white font-semibold text-lg">{category.title}</h3>
+                </div>
+                <ul className="space-y-2 font-mono text-sm text-slate-400">
+                  {category.skills.map((skill, sIdx) => (
+                    <li key={sIdx} className="flex items-center gap-2 group-hover:text-slate-300 transition-colors">
+                      <span className="text-blue-500/70">&bull;</span> {skill}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
