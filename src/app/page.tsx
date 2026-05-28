@@ -2,6 +2,7 @@
 import Hero from '@/components/Hero';
 import AboutAndSkills from '@/components/AboutAndSkills';
 import Projects from '@/components/Projects';
+import ExperienceAndContact from '@/components/ExperienceAndContact';
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero />
       <AboutAndSkills />
       <Projects />
+      <ExperienceAndContact />
       {/* Les autres sections viendront après */}
     </main>
   );
