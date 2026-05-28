@@ -2,7 +2,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Code } from 'lucide-react';
 
 export default function Projects() {
   // Liste de tes projets basés sur ta maquette et tes réalisations
@@ -107,7 +107,7 @@ export default function Projects() {
                   href={project.githubLink} 
                   className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
                 >
-                  <Github className="w-4 h-4" /> 
+                  <Code className="w-4 h-4" /> 
                   Repository
                 </a>
               </div>

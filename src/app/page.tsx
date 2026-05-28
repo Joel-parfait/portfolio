@@ -1,6 +1,7 @@
 // src/app/page.tsx
 import Hero from '@/components/Hero';
 import AboutAndSkills from '@/components/AboutAndSkills';
+import Projects from '@/components/Projects';
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
       {/* On pourrait mettre un Header ici plus tard */}
       <Hero />
       <AboutAndSkills />
-
+      <Projects />
       {/* Les autres sections viendront après */}
     </main>
   );
