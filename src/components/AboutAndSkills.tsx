@@ -70,7 +70,7 @@ export default function AboutAndSkills() {
         <div className="space-y-6">
           <div className="p-6 bg-card border border-border rounded-xl space-y-2">
             <h3 className="text-white font-semibold text-lg">Education</h3>
-            <p className="text-blue-400 text-sm font-medium">BTS en Informatique & Sécurité</p>
+            <p className="text-blue-400 text-sm font-medium">Licence en Administration et Sécurité Réseaux</p>
             <p className="text-slate-500 text-xs">Spécialisation Systèmes et Réseaux</p>
           </div>
 
