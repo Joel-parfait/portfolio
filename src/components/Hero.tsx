@@ -87,11 +87,11 @@ export default function Hero() {
           </motion.h1>
 
           <motion.p variants={itemVariants} className="text-xl md:text-2xl text-slate-400 font-semibold">
-            Web Developer & Network Security Student
+            Ingénieur Réseaux & Cybersécurité | Développeur Full-Stack
           </motion.p>
           
           <motion.p variants={itemVariants} className="text-slate-400 max-w-md text-sm md:text-base">
-            Passionné par la création d'applications web modernes et la sécurisation des systèmes.
+            Je conçois des applications web et mobiles, des infrastructures réseau sécurisées et des solutions de cybersécurité adaptées aux besoins des entreprises.
           </motion.p>
 
           {/* Boutons / Liens */}
